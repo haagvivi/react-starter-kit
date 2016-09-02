@@ -15,3 +15,7 @@ export function getName () {
     }), waitingTime)
   })
 }
+
+export function checkAuth (nextState, replace) {
+  console.warn('No need to be Auth')
+}

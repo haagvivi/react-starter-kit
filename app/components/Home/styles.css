@@ -1,7 +1,0 @@
-.container {
-  composes: centeredContainer from 'sharedStyles/styles.css';
-}
-
-.homeText {
-  color: blue;
-}
