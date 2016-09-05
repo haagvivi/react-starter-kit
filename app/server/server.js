@@ -12,8 +12,9 @@ import configureStore from 'store/configureStore'
 
 // initialize the server and configure support for ejs templates
 const app = new Express()
-// const server = new Server(app)
+const server = new Server(app)
 // define the folder that will be used for static assets
+app.use(Express.static(path.join(__dirname, '../..', 'build')))
 app.use(Express.static(path.join(__dirname, '../', 'static')))
 
 app.set('view engine', 'ejs')
@@ -66,10 +67,9 @@ app.get('*', (req, res) => {
 // start the server
 const port = process.env.PORT || 3000
 const env = process.env.NODE_ENV || 'production'
-app.listen(port)
-// server.listen(port, err => {
-//   if (err) {
-//     return console.error(err)
-//   }
-//   console.info(`Server running on http://localhost:${port} [${env}]`)
-// })
+server.listen(port, err => {
+  if (err) {
+    return console.error(err)
+  }
+  console.info(`Server running on http://localhost:${port} [${env}]`)
+})

@@ -32,18 +32,22 @@ const base = {
     app: path.join(__dirname, 'app', 'app.js')
   },
   output: {
-    path: path.join(__dirname, 'app', 'static', 'js'),
-    publicPath: '/js/',
+    path: path.join(__dirname, 'app', 'static'),
+    publicPath: '/',
     filename: 'bundle.js'
   },
   module: {
     loaders: [
       {test: /\.js$/, exclude: /node_modules/, loader: 'babel-loader'},
-      {test: /\.scss$/,loader: cssLoader}
+      {test: /\.scss$/,loader: cssLoader},
+      {test: /\.(jpe?g|png|gif|svg)$/i,loaders:['file?hash=sha512&digest=hex&name=[hash].[ext]']}
     ]
   },
   resolve: {
-    root: path.resolve('./app')
+    root: [
+      path.resolve('./app'),
+      path.join(__dirname, 'app', 'static')
+    ]
   }
 }
 
@@ -53,12 +57,17 @@ const developmentConfig = {
     hot: true,
     inline: true,
     progress: true,
-    contentBase: 'app/'
+    contentBase: 'app/static/'
   },
   plugins: [HtmlWebpackPluginConfig, new webpack.HotModuleReplacementPlugin()]
 }
 
 const productionConfig = {
+  output: {
+    path: path.resolve(__dirname, './build/js'),
+    publicPath: '/js/',
+    filename: 'bundle.js',
+  },
   devtool: 'cheap-module-source-map',
   plugins: [new ExtractTextPlugin('../css/styles.css'), productionPlugin]
 }

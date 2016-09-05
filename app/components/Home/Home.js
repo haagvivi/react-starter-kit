@@ -17,6 +17,7 @@ export default function Home ({name, handleClick, error, isFetching}) {
         ? 'Loading'
         : 'Change Name'}
       </button>
+      <img src='img/image.png' width="500px" />
       {error ? <p>{error}</p> : null}
     </div>
   )
