@@ -57,7 +57,8 @@ const developmentConfig = {
     hot: true,
     inline: true,
     progress: true,
-    contentBase: 'app/static/'
+    contentBase: 'app/static/',
+    historyApiFallback: true
   },
   plugins: [HtmlWebpackPluginConfig, new webpack.HotModuleReplacementPlugin()]
 }

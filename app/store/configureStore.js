@@ -5,7 +5,8 @@ import * as reducers from 'redux/modules'
 
 export default function configureStore (initialState) {
   const store = createStore(combineReducers({...reducers, routing: routerReducer}), initialState, compose(
-    applyMiddleware(thunk)
+    applyMiddleware(thunk),
+    typeof window === 'object' && typeof window.devToolsExtension !== 'undefined' ? window.devToolsExtension() : f => f
   ))
 
   return store
