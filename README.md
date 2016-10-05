@@ -1,5 +1,9 @@
 # react-starter-kit
 
+## WARNING
+
+Work in progress!
+
 ## Installation
 
 `npm install`

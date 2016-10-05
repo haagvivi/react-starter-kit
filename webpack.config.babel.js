@@ -35,8 +35,8 @@ const cssLoader = isProduction ? ExtractTextPlugin.extract('style-loader', 'css-
 
 const base = {
   entry: [
-    'babel-polyfill',
-    path.join(__dirname, 'app', 'app.js')
+    'webpack-hot-middleware/client?path=/__webpack_hmr&timeout=20000',
+    path.join(__dirname, 'app', 'app.js'),
   ],
   output: {
     path: path.join(__dirname, 'app', 'static'),
@@ -80,14 +80,12 @@ const base = {
 
 const developmentConfig = {
   devtool: 'cheap-module-inline-source-map',
-  devServer: {
-    hot: true,
-    inline: true,
-    progress: true,
-    contentBase: 'app/static/',
-    historyApiFallback: true
-  },
-  plugins: [HtmlWebpackPluginConfig, new webpack.HotModuleReplacementPlugin()]
+  plugins: [
+    HtmlWebpackPluginConfig,
+    new webpack.optimize.OccurenceOrderPlugin(),
+    new webpack.HotModuleReplacementPlugin(),
+    new webpack.NoErrorsPlugin(),
+  ]
 }
 
 const productionConfig = {

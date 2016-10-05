@@ -31,3 +31,7 @@ ReactDOM.render(
   </Provider>,
   document.getElementById('app')
 )
+
+if (module.hot) {
+  module.hot.accept()
+}
