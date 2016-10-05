@@ -9,6 +9,12 @@ const HtmlWebpackPluginConfig = new HtmlWebpackPlugin({
   inject: 'body'
 })
 
+const webpackUglify = new webpack.optimize.UglifyJsPlugin({
+  compress: {
+    warnings: false
+  }
+})
+
 const PATHS = {
   app: path.join(__dirname, 'app'),
   build: path.join(__dirname, 'dist')
@@ -16,7 +22,7 @@ const PATHS = {
 
 const LAUNCH_COMMAND = process.env.npm_lifecycle_event
 
-const isProduction = LAUNCH_COMMAND === 'production'
+const isProduction = LAUNCH_COMMAND === 'build'
 process.env.BABEL_ENV = LAUNCH_COMMAND
 
 const productionPlugin = new webpack.DefinePlugin({
@@ -28,9 +34,10 @@ const productionPlugin = new webpack.DefinePlugin({
 const cssLoader = isProduction ? ExtractTextPlugin.extract('style-loader', 'css-loader', 'sass-loader') : 'style!css!sass'
 
 const base = {
-  entry: {
-    app: path.join(__dirname, 'app', 'app.js')
-  },
+  entry: [
+    'babel-polyfill',
+    path.join(__dirname, 'app', 'app.js')
+  ],
   output: {
     path: path.join(__dirname, 'app', 'static'),
     publicPath: '/',
@@ -38,9 +45,29 @@ const base = {
   },
   module: {
     loaders: [
-      {test: /\.js$/, exclude: /node_modules/, loader: 'babel-loader'},
-      {test: /\.scss$/,loader: cssLoader},
-      {test: /\.(jpe?g|png|gif|svg)$/i,loaders:['file?hash=sha512&digest=hex&name=[hash].[ext]']}
+      {
+        test: /\.js$/,
+        exclude: /node_modules/,
+        loader: 'babel-loader'
+      }, {
+        test: /\.scss$/,
+        loader: cssLoader
+      }, {
+        test: /\.(jpe?g|png|gif|svg)$/i,
+        loaders:['file?hash=sha512&digest=hex&name=[hash].[ext]']
+      }, {
+        test: /\.woff(\?v=\d+\.\d+\.\d+)?$/,
+        loader: 'file?name=fonts/[name].[hash].[ext]&mimetype=application/font-woff',
+      }, {
+        test: /\.woff2(\?v=\d+\.\d+\.\d+)?$/,
+        loader: 'file?name=fonts/[name].[hash].[ext]&mimetype=application/font-woff',
+      }, {
+        test: /\.ttf(\?v=\d+\.\d+\.\d+)?$/,
+        loader: 'file?name=fonts/[name].[hash].[ext]&mimetype=application/octet-stream',
+      }, {
+        test: /\.eot(\?v=\d+\.\d+\.\d+)?$/,
+        loader: 'file?name=fonts/[name].[hash].[ext]',
+      }
     ]
   },
   resolve: {
@@ -70,7 +97,7 @@ const productionConfig = {
     filename: 'bundle.js',
   },
   devtool: 'cheap-module-source-map',
-  plugins: [new ExtractTextPlugin('../css/styles.css'), productionPlugin]
+  plugins: [new ExtractTextPlugin('../css/styles.css'), productionPlugin, webpackUglify]
 }
 
 export default Object.assign({}, base,

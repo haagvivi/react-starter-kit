@@ -9,10 +9,17 @@ import { checkAuth } from 'helpers/helpers'
 import { Provider } from 'react-redux'
 import { createMemoryHistory, useQueries } from 'history'
 import configureStore from 'store/configureStore'
+import compression from 'compression'
+import Helmet from 'react-helmet'
+import { NotFound } from 'components'
 
 // initialize the server and configure support for ejs templates
 const app = new Express()
 const server = new Server(app)
+
+// Enable gzip.
+app.use(compression())
+
 // define the folder that will be used for static assets
 app.use(Express.static(path.join(__dirname, '../..', 'build')))
 app.use(Express.static(path.join(__dirname, '../', 'static')))
@@ -42,7 +49,7 @@ app.get('*', (req, res) => {
       }
 
       // generate the React markup for the current route
-      let html
+      let html, title, meta
       // let reduxState = escape(JSON.stringify(store.getState()))
       let reduxState = escape(JSON.stringify(store.getState()))
       if (renderProps) {
@@ -52,14 +59,17 @@ app.get('*', (req, res) => {
             { <RouterContext {...renderProps}/> }
           </Provider>
         )
+        let head = Helmet.rewind()
+        title = head.title.toString()
+        meta = head.meta.toString()
       } else {
         // otherwise we can render a 404 page
-        // html = renderToString(<NotFoundPage/>)
+        html = renderToString(<NotFound/>)
         res.status(404)
       }
 
       // render the index template with the embedded React html
-      return res.render('index', { html, reduxState })
+      return res.render('index', { html, reduxState, title, meta })
     }
   )
 })
