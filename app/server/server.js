@@ -3,11 +3,11 @@ import { Server } from 'http'
 import Express from 'express'
 import React from 'react'
 import { renderToString } from 'react-dom/server'
-import { useRouterHistory, match, RouterContext } from 'react-router'
+import { match, RouterContext } from 'react-router'
 import createRoutes from 'config/routes'
 import { checkAuth } from 'helpers/helpers'
 import { Provider } from 'react-redux'
-import { createMemoryHistory, useQueries } from 'history'
+import { createMemoryHistory } from 'history'
 import configureStore from 'store/configureStore'
 import compression from 'compression'
 import Helmet from 'react-helmet'
@@ -29,13 +29,12 @@ app.set('views', path.join(__dirname, '../', 'views'))
 
 // universal routing and rendering
 app.get('*', (req, res) => {
-  let history = useRouterHistory(useQueries(createMemoryHistory))();
+  let memoryHistory = createMemoryHistory()
   let store = configureStore()
-  let routes = createRoutes(checkAuth, history)
-  let location = history.createLocation(req.url);
+  let routes = createRoutes(checkAuth, memoryHistory)
 
   match(
-    { routes, location},
+    { routes, location: req.url},
     (err, redirectLocation, renderProps) => {
 
       // in case of error display the error message
