@@ -39,13 +39,13 @@ export const setName = () => {
   }
 }
 
-const initialUserState = Map({
+const initialNameState = Map({
   name: 'Default',
   isFetching: false,
   error: '',
 })
 
-export default name = (state = initialUserState, action) => {
+const name = (state = initialNameState, action) => {
   switch (action.type) {
     case FETCHING_NAME :
       return state.merge({
@@ -65,3 +65,5 @@ export default name = (state = initialUserState, action) => {
       return state
   }
 }
+
+export default name
