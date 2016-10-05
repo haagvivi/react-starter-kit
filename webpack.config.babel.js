@@ -1,11 +1,12 @@
 import webpack from 'webpack'
 import path from 'path'
 import HtmlWebpackPlugin from 'html-webpack-plugin'
+import ExtractTextPlugin from 'extract-text-webpack-plugin'
 
 const HtmlWebpackPluginConfig = new HtmlWebpackPlugin({
   template: __dirname + '/app/index.html',
   filename: 'index.html',
-  inject: 'body',
+  inject: 'body'
 })
 
 const PATHS = {
@@ -24,39 +25,52 @@ const productionPlugin = new webpack.DefinePlugin({
   }
 })
 
+const cssLoader = isProduction ? ExtractTextPlugin.extract('style-loader', 'css-loader', 'sass-loader') : 'style!css!sass'
+
 const base = {
-  entry: [
-    PATHS.app
-  ],
+  entry: {
+    app: path.join(__dirname, 'app', 'app.js')
+  },
   output: {
-    path: PATHS.build,
-    filename: 'index_bundle.js',
+    path: path.join(__dirname, 'app', 'static'),
+    publicPath: '/',
+    filename: 'bundle.js'
   },
   module: {
     loaders: [
       {test: /\.js$/, exclude: /node_modules/, loader: 'babel-loader'},
-      {test: /\.css$/, loader: 'style!css?sourceMap&modules&localIdentName=[name]__[local]___[hash:base64:5]'}
+      {test: /\.scss$/,loader: cssLoader},
+      {test: /\.(jpe?g|png|gif|svg)$/i,loaders:['file?hash=sha512&digest=hex&name=[hash].[ext]']}
     ]
   },
   resolve: {
-    root: path.resolve('./app')
+    root: [
+      path.resolve('./app'),
+      path.join(__dirname, 'app', 'static')
+    ]
   }
 }
 
 const developmentConfig = {
   devtool: 'cheap-module-inline-source-map',
   devServer: {
-    contentBase: PATHS.build,
     hot: true,
     inline: true,
-    progress: true
+    progress: true,
+    contentBase: 'app/static/',
+    historyApiFallback: true
   },
   plugins: [HtmlWebpackPluginConfig, new webpack.HotModuleReplacementPlugin()]
 }
 
 const productionConfig = {
+  output: {
+    path: path.resolve(__dirname, './build/js'),
+    publicPath: '/js/',
+    filename: 'bundle.js',
+  },
   devtool: 'cheap-module-source-map',
-  plugins: [HtmlWebpackPluginConfig, productionPlugin]
+  plugins: [new ExtractTextPlugin('../css/styles.css'), productionPlugin]
 }
 
 export default Object.assign({}, base,
