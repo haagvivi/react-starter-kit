@@ -5,56 +5,47 @@ const FETCHING_NAME = 'FETCHING_NAME'
 const FETCHING_NAME_FAILURE = 'FETCHING_NAME_FAILURE'
 const FETCHING_NAME_SUCCESS = 'FETCHING_NAME_SUCCESS'
 
-function fetchingName () {
-  return {
-    type: FETCHING_NAME
-  }
-}
+const fetchingName = () => ({
+  type: FETCHING_NAME,
+})
 
-function fetchingNameFailure () {
-  return {
-    type: FETCHING_NAME_FAILURE,
-    error: 'Error fetching name.'
-  }
-}
+const fetchingNameFailure = () => ({
+  type: FETCHING_NAME_FAILURE,
+  error: 'Error fetching name.',
+})
 
-function fetchingNameSuccess (name) {
-  return {
-    type: FETCHING_NAME_SUCCESS,
-    name
-  }
-}
+const fetchingNameSuccess = (name) => ({
+  type: FETCHING_NAME_SUCCESS,
+  name,
+})
 
-export function fetchAndHandleName () {
-  return function (dispatch) {
+export const fetchAndHandleName = () => {
+  return (dispatch) => {
     dispatch(fetchingName())
-    getName()
-      .then((user) => {
-        dispatch(fetchingNameSuccess(user.name))
-      })
-      .catch((error) => {
-        console.error(error)
-        dispatch(fetchingNameFailure(error))
-      })
+    return getName().then(
+      user => dispatch(fetchingNameSuccess(user.name)),
+      error => dispatch(fetchingNameFailure(error))
+    )
   }
 }
 
-export function setName () {
-  return function (dispatch, getState) {
+export const setName = () => {
+  return (dispatch, getState) => {
     dispatch(fetchingName())
-    getFirstName()
-      .then((user) => dispatch(fetchingNameSuccess(user.name)))
-      .catch((error) => dispatch(fetchingNameFailure(error)))
+    return getFirstName().then(
+      user => dispatch(fetchingNameSuccess(user.name)),
+      error => dispatch(fetchingNameFailure(error))
+    )
   }
 }
 
 const initialUserState = Map({
   name: 'Default',
   isFetching: false,
-  error: ''
+  error: '',
 })
 
-export default function home (state = initialUserState, action) {
+export default name = (state = initialUserState, action) => {
   switch (action.type) {
     case FETCHING_NAME :
       return state.merge({

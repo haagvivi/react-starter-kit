@@ -1,9 +1,10 @@
-import React, { PropTypes } from 'react'
+import React, { PropTypes, Component } from 'react'
 
-const MainContainer = React.createClass({
-  propTypes: {
-    children: PropTypes.object.isRequired
-  },
+class MainContainer extends Component {
+  constructor (props) {
+    super(props)
+  }
+
   render () {
     return (
       <div>
@@ -11,6 +12,10 @@ const MainContainer = React.createClass({
       </div>
     )
   }
-})
+}
+
+MainContainer.propTypes = {
+  children: PropTypes.object.isRequired,
+}
 
 export default MainContainer

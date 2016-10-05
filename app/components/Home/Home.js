@@ -1,14 +1,7 @@
 import React, { PropTypes } from 'react'
 import Helmet from 'react-helmet'
 
-Home.propTypes = {
-  name: PropTypes.string.isRequired,
-  handleClick: PropTypes.func.isRequired,
-  error: PropTypes.string.isRequired,
-  isFetching: PropTypes.bool.isRequired,
-}
-
-export default function Home ({name, handleClick, error, isFetching}) {
+const Home = ({name, handleClick, error, isFetching}) => {
   return (
     <div className='centeredContainer'>
       <Helmet
@@ -29,3 +22,12 @@ export default function Home ({name, handleClick, error, isFetching}) {
     </div>
   )
 }
+
+Home.propTypes = {
+  name: PropTypes.string.isRequired,
+  handleClick: PropTypes.func.isRequired,
+  error: PropTypes.string.isRequired,
+  isFetching: PropTypes.bool.isRequired,
+}
+
+export default Home

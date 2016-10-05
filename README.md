@@ -8,9 +8,9 @@
 
 ## Server Side
 
-`npm run prodution`
+`npm run build`
 
-`npm run production-start`
+`npm run production`
 
 ## Credit
 Largely inspired by http://reactjsprogram.teachable.com/
