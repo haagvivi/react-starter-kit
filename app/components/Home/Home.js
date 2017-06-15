@@ -7,7 +7,7 @@ const Home = ({name, handleClick, error, isFetching}) => {
       <Helmet
         title='Hello World'
         meta={[
-          {'name': 'description', 'content': 'Hello World Description.'},
+          {'name': 'description', 'content': 'Hello World Description.'}
         ]}
       />
       <h1>{'Hello World!'}</h1>
@@ -27,7 +27,7 @@ Home.propTypes = {
   name: PropTypes.string.isRequired,
   handleClick: PropTypes.func.isRequired,
   error: PropTypes.string.isRequired,
-  isFetching: PropTypes.bool.isRequired,
+  isFetching: PropTypes.bool.isRequired
 }
 
 export default Home

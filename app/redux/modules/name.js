@@ -6,17 +6,17 @@ const FETCHING_NAME_FAILURE = 'FETCHING_NAME_FAILURE'
 const FETCHING_NAME_SUCCESS = 'FETCHING_NAME_SUCCESS'
 
 const fetchingName = () => ({
-  type: FETCHING_NAME,
+  type: FETCHING_NAME
 })
 
 const fetchingNameFailure = () => ({
   type: FETCHING_NAME_FAILURE,
-  error: 'Error fetching name.',
+  error: 'Error fetching name.'
 })
 
 const fetchingNameSuccess = (name) => ({
   type: FETCHING_NAME_SUCCESS,
-  name,
+  name
 })
 
 export const fetchAndHandleName = () => {
@@ -42,7 +42,7 @@ export const setName = () => {
 const initialNameState = Map({
   name: 'Default',
   isFetching: false,
-  error: '',
+  error: ''
 })
 
 const name = (state = initialNameState, action) => {

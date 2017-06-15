@@ -29,15 +29,14 @@ app.set('views', path.join(__dirname, '../', 'views'))
 
 // universal routing and rendering
 app.get('*', (req, res) => {
-  let history = useRouterHistory(useQueries(createMemoryHistory))();
+  let history = useRouterHistory(useQueries(createMemoryHistory))()
   let store = configureStore()
   let routes = createRoutes(checkAuth, history)
-  let location = history.createLocation(req.url);
+  let location = history.createLocation(req.url)
 
   match(
     { routes, location},
     (err, redirectLocation, renderProps) => {
-
       // in case of error display the error message
       if (err) {
         return res.status(500).send(err.message)

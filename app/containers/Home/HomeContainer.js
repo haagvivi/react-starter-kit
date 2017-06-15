@@ -35,7 +35,7 @@ HomeContainer.propTypes = {
   isFetching: PropTypes.bool.isRequired,
   error: PropTypes.string.isRequired,
   fetchAndHandleName: PropTypes.func.isRequired,
-  setName: PropTypes.func.isRequired,
+  setName: PropTypes.func.isRequired
 }
 
 HomeContainer.defaultProps = {}

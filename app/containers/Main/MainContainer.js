@@ -15,7 +15,7 @@ class MainContainer extends Component {
 }
 
 MainContainer.propTypes = {
-  children: PropTypes.object.isRequired,
+  children: PropTypes.object.isRequired
 }
 
 export default MainContainer
